@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pomodoro-timer",
-    "slug": "pomodoro-timer",
+    "name": "Movie Browser",
+    "slug": "movie-browser",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
