@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PixelSvitlo.ViewModels"
+             xmlns:views="clr-namespace:PixelSvitlo.Views"
+             xmlns:app="clr-namespace:PixelSvitlo"
+             x:Class="PixelSvitlo.Views.HomePage"
+             x:DataType="vm:HomeViewModel"
+             Title="Svitlo">
+    <Grid RowDefinitions="Auto,3,*">
+        <Border Grid.Row="0" Style="{StaticResource PixelHeader}">
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="0">
+                <VerticalStackLayout Margin="10,0,0,0" VerticalOptions="Center">
+                    <Label Text="Svitlo" Style="{StaticResource TitleLabel}" />
+                    <Label Text="Графік відключень у Чернівцях" Style="{StaticResource HeaderSubLabel}" />
+                </VerticalStackLayout>
+                <views:HeaderIconButton Grid.Column="1" Source="plus_w.svg" Command="{Binding AddCommand}" IsVisible="{Binding HasGroups}" />
+                <views:HeaderIconButton Grid.Column="2" Source="sliders_horizontal_w.svg" Command="{Binding SettingsCommand}" />
+            </Grid>
+        </Border>
+        <BoxView Grid.Row="1" Color="Black" />
+
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" Spacing="28" Padding="32,0"
+                             IsVisible="{Binding IsEmpty}">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="До якої групи ви належите?" FontSize="24" FontAttributes="Bold"
+                       HorizontalTextAlignment="Center" />
+                <Label Text="Додайте її, щоб бачити, коли є світло, а коли його вимкнуть." Style="{StaticResource MutedLabel}"
+                       HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+            <views:BevelButton ImageSource="plus_w.svg" IconSize="96" Command="{Binding AddCommand}"
+                               WidthRequest="190" HeightRequest="190" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <RefreshView Grid.Row="2" IsVisible="{Binding HasGroups}" IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <VerticalStackLayout Padding="16,16,16,28" Spacing="28">
+                    <Border Style="{StaticResource FlatCard}" BackgroundColor="{StaticResource PixelPossible}"
+                            IsVisible="{Binding Offline}" Padding="12,10">
+                        <Label Text="{Binding OfflineText}" FontSize="13" />
+                    </Border>
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding Main}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:MainCardItem">
+                                <views:GroupCard>
+                                    <views:GroupCard.Behaviors>
+                                        <app:PressFeedbackBehavior />
+                                    </views:GroupCard.Behaviors>
+                                    <views:GroupCard.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding OpenCommand, Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}}"
+                                            CommandParameter="{Binding Id}" />
+                                    </views:GroupCard.GestureRecognizers>
+                                </views:GroupCard>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding HasOthers}">
+                        <Label Text="Інші групи" Style="{StaticResource SectionLabel}" />
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Others}" Spacing="10">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:GroupRow">
+                                    <Border Style="{StaticResource FlatCard}" BackgroundColor="{Binding Color}"
+                                            Padding="14,12">
+                                        <Border.Behaviors>
+                                            <app:PressFeedbackBehavior />
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding OpenCommand, Source={RelativeSource AncestorType={x:Type vm:HomeViewModel}}}"
+                                                CommandParameter="{Binding Id}" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14">
+                                            <Image Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"
+                                                   VerticalOptions="Center" />
+                                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                                <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="0">
+                                                    <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="17" />
+                                                    <Label Grid.Column="1" Text="{Binding SubTitle}" Style="{StaticResource MutedLabel}"
+                                                           VerticalOptions="End" Margin="8,0,0,1" IsVisible="{Binding HasSub}" />
+                                                    <Label Grid.Column="2" Text="{Binding AddressLine}" Style="{StaticResource MutedLabel}"
+                                                           FontSize="13" VerticalOptions="End" Margin="10,0,0,1"
+                                                           LineBreakMode="TailTruncation" MaxLines="1"
+                                                           IsVisible="{Binding HasAddress}" />
+                                                </Grid>
+                                                <HorizontalStackLayout Spacing="6">
+                                                    <Label Text="{Binding State}" FontAttributes="Bold" FontSize="14" />
+                                                    <Label Text="{Binding Slot}" Style="{StaticResource NumLabel}"
+                                                           FontSize="14" />
+                                                </HorizontalStackLayout>
+                                            </VerticalStackLayout>
+                                            <Image Grid.Column="2" Source="chevron_right.svg" WidthRequest="24"
+                                                   HeightRequest="24" VerticalOptions="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+
+                    <views:BevelButton Text="Додати групу" ImageSource="plus_w.svg" Command="{Binding AddCommand}"
+                                       HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

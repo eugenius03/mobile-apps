@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PixelSvitlo.ViewModels"
+             xmlns:views="clr-namespace:PixelSvitlo.Views"
+             x:Class="PixelSvitlo.Views.GroupDetailPage"
+             x:DataType="vm:DetailViewModel"
+             Title="Група">
+    <Grid RowDefinitions="Auto,3,*">
+        <Border x:Name="HeaderBar" Grid.Row="0" Style="{StaticResource PixelHeader}">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="6">
+                <views:HeaderIconButton Source="arrow_left_w.svg" Command="{Binding BackCommand}" />
+                <VerticalStackLayout Grid.Column="1">
+                    <Grid>
+                        <HorizontalStackLayout x:Name="TitleRow" Spacing="10">
+                            <HorizontalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="OnTitleDoubleTapped" />
+                            </HorizontalStackLayout.GestureRecognizers>
+                            <Label Text="{Binding Title}" Style="{StaticResource TitleLabel}" VerticalOptions="Center" />
+                            <Image Source="pencil_w.svg" WidthRequest="24" HeightRequest="24" Opacity="0.7" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTitleDoubleTapped" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </HorizontalStackLayout>
+                        <Entry x:Name="TitleEntry" IsVisible="False" Text="{Binding Nickname}"
+                               TextColor="{StaticResource PixelOnAccent}" FontSize="24" FontAttributes="Bold"
+                               MaxLength="20" ReturnType="Done" Margin="0,-6"
+                               Completed="OnTitleDone" Unfocused="OnTitleDone" />
+                    </Grid>
+                    <Label Text="{Binding Subtitle}" Style="{StaticResource HeaderSubLabel}" />
+                </VerticalStackLayout>
+                <views:HeaderIconButton Grid.Column="2" Source="reload_w.svg" Command="{Binding RefreshCommand}" />
+            </Grid>
+        </Border>
+        <BoxView Grid.Row="1" Color="Black" />
+
+        <ScrollView Grid.Row="2" IsVisible="{Binding Exists}">
+            <VerticalStackLayout Padding="16,16,16,28" Spacing="24">
+                <Border Style="{StaticResource FlatCard}" BackgroundColor="{StaticResource PixelPossible}"
+                        IsVisible="{Binding Stale}" Padding="12,10">
+                    <Label Text="{Binding StaleText}" FontSize="13" />
+                </Border>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Card}">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:MainCardItem">
+                            <views:GroupCard />
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8" IsVisible="{Binding HasAddress}">
+                    <Label Text="Адреса" Style="{StaticResource SectionLabel}" />
+                    <Border Style="{StaticResource FlatCard}" Padding="14,12">
+                        <Label Text="{Binding Address}" FontSize="16" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Days}" Spacing="20">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:DayItem">
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="{Binding Title}" Style="{StaticResource SectionLabel}" />
+                                <VerticalStackLayout BindableLayout.ItemsSource="{Binding Runs}" Spacing="8">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate x:DataType="vm:RunItem">
+                                            <Border Style="{StaticResource FlatCard}" BackgroundColor="{Binding Color}"
+                                                    Padding="12,10">
+                                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                                                    <Image Source="{Binding Icon}" WidthRequest="24" HeightRequest="24"
+                                                           VerticalOptions="Center" />
+                                                    <Label Grid.Column="1" Text="{Binding Range}" Style="{StaticResource NumLabel}"
+                                                           VerticalOptions="Center" />
+                                                    <Label Grid.Column="2" Text="{Binding Length}"
+                                                           FontSize="14"
+                                                           VerticalOptions="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </VerticalStackLayout>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="14">
+                    <views:BevelButton Text="Зробити головною" ImageSource="star_w.svg"
+                                       Command="{Binding MakeMainCommand}" IsVisible="{Binding CanMakeMain}" />
+                    <views:BevelButton Text="Видалити групу" ImageSource="trash.svg" TextColor="Black"
+                                       BaseColor="{StaticResource PixelDanger}" Command="{Binding RemoveCommand}" />
+                </VerticalStackLayout>
+
+                <Label Text="{Binding Updated}" Style="{StaticResource MutedLabel}"
+                       FontSize="12" HorizontalOptions="Center" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

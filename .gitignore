@@ -1,0 +1,18 @@
+# local tooling
+/.idea
+.DS_Store
+node_modules/
+dist/
+.expo/
+
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+*.log
+
+# Gradle (if a Java tool was run here)
+.gradle/
+build/

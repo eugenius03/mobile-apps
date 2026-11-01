@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:PixelSvitlo.Views"
+             xmlns:vm="clr-namespace:PixelSvitlo.ViewModels"
+             x:Class="PixelSvitlo.Views.SettingsPage"
+             x:DataType="vm:SettingsViewModel"
+             Title="Налаштування">
+    <Grid RowDefinitions="Auto,3,*">
+        <Border Grid.Row="0" Style="{StaticResource PixelHeader}">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                <views:HeaderIconButton Source="arrow_left_w.svg" Command="{Binding BackCommand}" />
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Налаштування" Style="{StaticResource TitleLabel}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+        <BoxView Grid.Row="1" Color="Black" />
+
+        <ScrollView Grid.Row="2">
+            <VerticalStackLayout Padding="16,20,16,28" Spacing="28">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Можливе світло" Style="{StaticResource SectionLabel}" />
+                    <Label Text="Деякі проміжки позначені як можливі. Показувати їх окремим кольором чи вважати, що світло є."
+                           Style="{StaticResource MutedLabel}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="14" Margin="0,4,0,0">
+                        <views:BevelButton Text="Окремий колір" Command="{Binding OwnColorCommand}"
+                                           BaseColor="{Binding OwnColor}" TextColor="{Binding OwnText}" />
+                        <views:BevelButton Grid.Column="1" Text="Як світло є" Command="{Binding AsOnCommand}"
+                                           BaseColor="{Binding AsOnColor}" TextColor="{Binding AsOnText}" />
+                    </Grid>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Про дані" Style="{StaticResource SectionLabel}" />
+                    <Label Style="{StaticResource MutedLabel}"
+                           Text="Графіки беруться з неофіційного API eSvitlo.cv. Час київський, оновлення кожні 15 хвилин. Без інтернету показується останній збережений графік із відповідною позначкою." />
+                </VerticalStackLayout>
+
+                <views:BevelButton Text="Видалити всі групи" ImageSource="trash.svg" TextColor="Black"
+                                   BaseColor="{StaticResource PixelDanger}" Command="{Binding ClearCommand}"
+                                   IsEnabled="{Binding CanClear}" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

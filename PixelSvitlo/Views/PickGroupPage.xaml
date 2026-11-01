@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:PixelSvitlo.Views"
+             xmlns:vm="clr-namespace:PixelSvitlo.ViewModels"
+             xmlns:app="clr-namespace:PixelSvitlo"
+             x:Class="PixelSvitlo.Views.PickGroupPage"
+             x:DataType="vm:PickGroupViewModel"
+             Title="Оберіть групу">
+    <Grid RowDefinitions="Auto,3,*">
+        <Border Grid.Row="0" Style="{StaticResource PixelHeader}">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="6">
+                <views:HeaderIconButton Source="arrow_left_w.svg" Command="{Binding BackCommand}" />
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="{Binding Title}" Style="{StaticResource TitleLabel}" />
+                    <Label Text="{Binding Hint}" Style="{StaticResource HeaderSubLabel}" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+        <BoxView Grid.Row="1" Color="Black" />
+
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" Spacing="12" IsVisible="{Binding ShowLoading}">
+            <ActivityIndicator IsRunning="True" Color="Black" />
+            <Label Text="Завантаження груп…" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Row="2" VerticalOptions="Center" Spacing="16" Margin="32"
+                             IsVisible="{Binding ShowError}">
+            <Label Text="{Binding Error}" HorizontalTextAlignment="Center" />
+            <views:BevelButton Text="Спробувати ще" Command="{Binding RetryCommand}" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="2" IsVisible="{Binding ShowGroups}">
+            <VerticalStackLayout Padding="16,20,16,24" Spacing="24">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Назва" Style="{StaticResource SectionLabel}" />
+                    <Border Style="{StaticResource FlatCard}" Padding="12,2">
+                        <Entry Text="{Binding Nickname}" Placeholder="Необов'язково, напр. Робота або Дім" MaxLength="20" />
+                    </Border>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Знайти за адресою" Style="{StaticResource SectionLabel}" />
+                    <Border Style="{StaticResource FlatCard}" Padding="12,2">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
+                            <Entry x:Name="DistrictEntry" Text="{Binding DistrictText}" Placeholder="Район або місто"
+                                   Focused="OnDistrictFocused" Unfocused="OnDistrictUnfocused" />
+                            <Image Grid.Column="1" Source="chevron_right.svg" WidthRequest="24" HeightRequest="24"
+                                   Rotation="90" VerticalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleDistrictsCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                    </Border>
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding DistrictSuggestions}" Spacing="8"
+                                         IsVisible="{Binding ShowDistrictSuggestions}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="x:String">
+                                <Border Style="{StaticResource FlatCard}" Padding="14,12">
+                                    <Border.Behaviors>
+                                        <app:PressFeedbackBehavior />
+                                    </Border.Behaviors>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding PickDistrictCommand, Source={RelativeSource AncestorType={x:Type vm:PickGroupViewModel}}}"
+                                            CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Label Text="{Binding .}" FontSize="16" />
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                    <Label Text="Такого району немає." Style="{StaticResource MutedLabel}"
+                           IsVisible="{Binding ShowNoDistricts}" />
+
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding PickingStreet}">
+                        <Border Style="{StaticResource FlatCard}" Padding="12,2">
+                            <Entry Text="{Binding StreetQuery}" Placeholder="Вулиця, напр. Універс" />
+                        </Border>
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Streets}" Spacing="8"
+                                             IsVisible="{Binding ShowStreetResults}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <Border Style="{StaticResource FlatCard}" Padding="14,12">
+                                        <Border.Behaviors>
+                                            <app:PressFeedbackBehavior />
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding PickStreetCommand, Source={RelativeSource AncestorType={x:Type vm:PickGroupViewModel}}}"
+                                                CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
+                                        <Label Text="{Binding .}" FontSize="16" />
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                        <Label Text="Вулиць не знайдено." Style="{StaticResource MutedLabel}"
+                               IsVisible="{Binding ShowNoStreets}" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="10" IsVisible="{Binding HasStreet}">
+                        <Border Style="{StaticResource FlatCard}" Padding="14,12">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ClearStreetCommand}" />
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                                <Label Text="{Binding Street}" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" />
+                                <Image Grid.Column="1" Source="pencil.svg" WidthRequest="24" HeightRequest="24" />
+                            </Grid>
+                        </Border>
+                        <views:BevelButton Text="{Binding WholeStreetText}" Command="{Binding PickWholeStreetCommand}"
+                                           IsVisible="{Binding AllSameGroup}" />
+                        <Border Style="{StaticResource FlatCard}" Padding="12,2">
+                            <Entry Text="{Binding HouseQuery}" Placeholder="Номер будинку" Keyboard="Default" MaxLength="12" />
+                        </Border>
+                        <Label Text="{Binding HouseHint}" Style="{StaticResource MutedLabel}" />
+                        <VerticalStackLayout BindableLayout.ItemsSource="{Binding Houses}" Spacing="8">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:HouseItem">
+                                    <Border Style="{StaticResource FlatCard}" Padding="14,12">
+                                        <Border.Behaviors>
+                                            <app:PressFeedbackBehavior />
+                                        </Border.Behaviors>
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding PickHouseCommand, Source={RelativeSource AncestorType={x:Type vm:PickGroupViewModel}}}"
+                                                CommandParameter="{Binding Hit}" />
+                                        </Border.GestureRecognizers>
+                                        <Grid ColumnDefinitions="*,Auto">
+                                            <Label Text="{Binding Number}" Style="{StaticResource NumLabel}" VerticalOptions="Center" VerticalTextAlignment="Center" />
+                                            <Label Grid.Column="1" Text="{Binding GroupText}" FontAttributes="Bold" VerticalOptions="Center" VerticalTextAlignment="Center" />
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding AddressError}" TextColor="#B91C1C"
+                           IsVisible="{Binding ShowAddressError}" />
+                </VerticalStackLayout>
+
+                <Label Text="Або оберіть номер групи" Style="{StaticResource SectionLabel}" />
+                <FlexLayout BindableLayout.ItemsSource="{Binding Groups}" Wrap="Wrap" JustifyContent="SpaceBetween">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate x:DataType="vm:GroupItem">
+                            <Border Style="{StaticResource FlatCard}" BackgroundColor="{Binding Color}"
+                                    FlexLayout.Basis="30%" HeightRequest="92" Margin="0,0,0,16">
+                                <Border.Behaviors>
+                                    <app:PressFeedbackBehavior />
+                                </Border.Behaviors>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding PickCommand, Source={RelativeSource AncestorType={x:Type vm:PickGroupViewModel}}}"
+                                        CommandParameter="{Binding Group}" />
+                                </Border.GestureRecognizers>
+                                <Label Text="{Binding Number}" Style="{StaticResource NumLabel}" FontSize="34"
+                                       VerticalOptions="Center" HorizontalOptions="Center" />
+                            </Border>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </FlexLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

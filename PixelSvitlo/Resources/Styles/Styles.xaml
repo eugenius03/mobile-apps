@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <OnPlatform x:Key="MonoFont" x:TypeArguments="x:String">
+        <On Platform="Android" Value="monospace" />
+        <On Platform="iOS, MacCatalyst" Value="Courier New" />
+        <On Platform="WinUI" Value="Courier New" />
+    </OnPlatform>
+
+    <Shadow x:Key="PixelShadow" Brush="Black" Offset="4,4" Radius="0" Opacity="1" />
+
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor" Value="{StaticResource PixelBg}" />
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource PixelInk}" />
+        <Setter Property="FontSize" Value="15" />
+    </Style>
+
+    <Style x:Key="TitleLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource PixelOnAccent}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style x:Key="SectionLabel" TargetType="Label">
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="17" />
+    </Style>
+
+    <Style x:Key="MutedLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource PixelMuted}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style x:Key="HeaderSubLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{StaticResource PixelOnAccentMuted}" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style x:Key="NumLabel" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource MonoFont}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="PixelCard" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="Stroke" Value="Black" />
+        <Setter Property="StrokeThickness" Value="3" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="Shadow" Value="{StaticResource PixelShadow}" />
+    </Style>
+
+    <Style x:Key="FlatCard" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="White" />
+        <Setter Property="Stroke" Value="Black" />
+        <Setter Property="StrokeThickness" Value="3" />
+        <Setter Property="Padding" Value="12" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource PixelAccent}" />
+        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="BorderColor" Value="Black" />
+        <Setter Property="BorderWidth" Value="3" />
+        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="Padding" Value="16,12" />
+        <Setter Property="Shadow" Value="{StaticResource PixelShadow}" />
+    </Style>
+
+    <Style TargetType="Entry">
+        <Setter Property="TextColor" Value="{StaticResource PixelInk}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource PixelMuted}" />
+    </Style>
+
+    <Style x:Key="PixelHeader" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{StaticResource PixelAccent}" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Padding" Value="6,8,6,8" />
+    </Style>
+
+</ResourceDictionary>

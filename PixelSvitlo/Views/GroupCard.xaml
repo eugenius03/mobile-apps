@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PixelSvitlo.ViewModels"
+             x:Class="PixelSvitlo.Views.GroupCard"
+             x:DataType="vm:MainCardItem">
+    <Border Style="{StaticResource PixelCard}" BackgroundColor="{Binding Color}" Padding="18" Margin="0,0,4,4">
+        <VerticalStackLayout Spacing="14">
+            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="0">
+                <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" />
+                <Label Grid.Column="1" Text="{Binding SubTitle}" Style="{StaticResource MutedLabel}" VerticalOptions="End"
+                       Margin="8,0,0,1" IsVisible="{Binding HasSub}" />
+                <Label Grid.Column="2" Text="{Binding AddressLine}" Style="{StaticResource MutedLabel}" FontSize="14"
+                       VerticalOptions="End" Margin="10,0,0,1" LineBreakMode="TailTruncation" MaxLines="1"
+                       IsVisible="{Binding HasAddress}" />
+            </Grid>
+
+            <HorizontalStackLayout Spacing="10" IsVisible="{Binding NotReady}">
+                <ActivityIndicator IsRunning="{Binding ShowSpinner}" IsVisible="{Binding ShowSpinner}" Color="Black"
+                                   WidthRequest="20" HeightRequest="20" />
+                <Label Text="{Binding Message}" FontSize="15" />
+            </HorizontalStackLayout>
+
+            <VerticalStackLayout Spacing="14" IsVisible="{Binding Ready}">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="16">
+                    <Border Style="{StaticResource FlatCard}" BackgroundColor="{Binding TileColor}" Padding="0"
+                            WidthRequest="72" HeightRequest="72">
+                        <Image Source="{Binding Icon}" WidthRequest="48" HeightRequest="48"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <Label Grid.Column="1" Text="{Binding Label}" FontSize="30" FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </Grid>
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="{Binding Until}" FontAttributes="Bold" FontSize="15" />
+                    <Label Text="{Binding Next}" FontSize="14"
+                           IsVisible="{Binding HasNext}" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding DayTitle}" Style="{StaticResource SectionLabel}" />
+                    <Border Style="{StaticResource FlatCard}" Padding="0">
+                        <VerticalStackLayout>
+                            <GraphicsView Drawable="{Binding Timeline}" HeightRequest="44" />
+                            <GraphicsView Drawable="{Binding Axis}" HeightRequest="22" Margin="0,2,0,2" />
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </Border>
+</ContentView>
