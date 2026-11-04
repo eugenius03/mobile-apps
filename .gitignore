@@ -1,0 +1,20 @@
+# local tooling
+/.idea
+.DS_Store
+node_modules/
+dist/
+.expo/
+
+# Flutter / Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+/android/.gradle
+/android/local.properties
+/ios/Pods
+*.iml
