@@ -1,0 +1,49 @@
+# Build and generated files
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Ll]ib/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+TestResults/
+coverage/
+*.log
+
+# .NET / Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.pdb
+*.aps
+*.cache
+*.dbmdl
+
+# Rider / IntelliJ
+.idea/
+*.iml
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+# Local tool state / generated data
+.local/
+*.db
+*.db-shm
+*.db-wal
+
+# OS files
+.DS_Store
+Thumbs.db
+Library/
+.aspnet/

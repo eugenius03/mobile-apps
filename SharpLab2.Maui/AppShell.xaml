@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SharpLab2.Maui.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Title="Резервування квитків"
+    FlyoutBehavior="Flyout"
+    FlyoutWidth="230"
+    FlyoutBackground="{AppThemeBinding Light=#F5F6F8, Dark=#1E1E1E}">
+
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="20,24,20,16" Spacing="2">
+            <Label Text="Квитки" FontSize="22" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+            <Label Text="Резервування" FontSize="13"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray200}}" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Border Margin="10,2" Padding="14,10" StrokeThickness="0" StrokeShape="RoundRectangle 8">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="Transparent" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter TargetName="ItemTitle" Property="Label.TextColor" Value="White" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+                <Label x:Name="ItemTitle" Text="{Binding Title}" FontSize="15" VerticalOptions="Center"
+                       TextColor="{AppThemeBinding Light=Black, Dark=White}" />
+            </Border>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+</Shell>

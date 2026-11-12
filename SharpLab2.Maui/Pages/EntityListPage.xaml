@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:crud="clr-namespace:SharpLab2.Maui.Crud"
+             x:Class="SharpLab2.Maui.Pages.EntityListPage"
+             x:DataType="crud:IEntityModule">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Додати" Clicked="OnAddClicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,*" Padding="16,8" RowSpacing="8">
+        <SearchBar x:Name="SearchBar" Placeholder="Пошук..." TextChanged="OnSearchChanged" />
+
+        <CollectionView x:Name="Items" Grid.Row="1" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <Label Text="Записів немає." HorizontalOptions="Center" Margin="0,24" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="crud:EntityRow">
+                    <Border Padding="14,10" Margin="0,4" StrokeShape="RoundRectangle 10" StrokeThickness="1"
+                            Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}">
+                        <Grid RowDefinitions="Auto,Auto" RowSpacing="10">
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Primary}" FontAttributes="Bold" FontSize="15" />
+                                <Label Text="{Binding Secondary}" FontSize="13"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray200}}" />
+                            </VerticalStackLayout>
+                            <HorizontalStackLayout Grid.Row="1" Spacing="8">
+                                <Button Text="Редагувати" Clicked="OnEditClicked" FontSize="13" HeightRequest="32"
+                                        Padding="12,0" CornerRadius="6" BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Primary}" BorderColor="{StaticResource Primary}" BorderWidth="1" />
+                                <Button Text="Видалити" Clicked="OnDeleteClicked" FontSize="13" HeightRequest="32"
+                                        Padding="12,0" CornerRadius="6" BackgroundColor="Transparent"
+                                        TextColor="Crimson" BorderColor="Crimson" BorderWidth="1" />
+                            </HorizontalStackLayout>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
